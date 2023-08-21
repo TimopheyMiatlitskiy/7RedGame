@@ -16,12 +16,13 @@ namespace _7RedGame
 
             int[] a1 = new int[n1];
             char[] c1 = new char[n1];
-
+            
             Console.WriteLine("Enter the cards of the first combination:");
 
             for (int i = 0; i < n1; i++)
             {
                 Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
+                Hint();
                 string[] str = Console.ReadLine().Split();
                 for (int j = 0; j < 1; j++)
                 {
@@ -41,6 +42,7 @@ namespace _7RedGame
             for (int i = 0; i < n2; i++)
             {
                 Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
+                Hint();
                 string[] str = Console.ReadLine().Split();
                 for (int j = 0; j < 1; j++)
                 {
@@ -116,6 +118,14 @@ namespace _7RedGame
         {
             string colors = "ROYGCBP";
             return colors.IndexOf(lett);
+        }
+
+        static void Hint()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("4 Y");
+            Console.ResetColor();
+            Console.SetCursorPosition(0, Console.CursorTop);
         }
     }
 }
