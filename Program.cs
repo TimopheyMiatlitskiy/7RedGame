@@ -8,31 +8,89 @@ namespace _7RedGame
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            // Data input
+        // Data input
+        start1:
             Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
-            int n1 = Convert.ToInt32(Console.ReadLine());
+            int n1 = 0;//Convert.ToInt32(Console.ReadLine());
+            try
+            {
+                n1 = Convert.ToInt32(Console.ReadLine());
+                if (n1 < 8 && n1 > 0)
+                {
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("uncorrect input");
+                goto start1;
+            }
 
             int[] a1 = new int[n1];
             char[] c1 = new char[n1];
-            
+
             Console.WriteLine("Enter the cards of the first combination:");
 
+        start2:
             for (int i = 0; i < n1; i++)
             {
                 Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
                 Hint();
-                string[] str = Console.ReadLine().Split();
-                for (int j = 0; j < 1; j++)
+                string[] str = { };
+
+                try
                 {
-                    a1[i] = Convert.ToInt32(str[0]);
-                    c1[i] = Convert.ToChar(str[1]);
+                    str = Console.ReadLine().Split();
+                    if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
+                    {
+                        throw new FormatException();
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("uncorrect input");
+                    goto start2;
+                }
+
+                if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
+                {
+                    for (int j = 0; j < 1; j++)
+                    {
+                        a1[i] = Convert.ToInt32(str[0]);
+                        c1[i] = Convert.ToChar(str[1].ToUpper());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("uncorrect input");
+                    goto start2;
                 }
             }
 
+        start3:
             Console.WriteLine("Enter the size of the second combination (from 1 to 7):");
-            int n2 = Convert.ToInt32(Console.ReadLine());
+            int n2 = 0;//Convert.ToInt32(Console.ReadLine());
+            try
+            {
+                n2 = Convert.ToInt32(Console.ReadLine());
+                if (n2 < 8 && n2 > 0)
+                {
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("uncorrect input");
+                goto start3;
+            }
 
             int[] a2 = new int[n2];
             char[] c2 = new char[n2];
@@ -44,10 +102,41 @@ namespace _7RedGame
                 Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
                 Hint();
                 string[] str = Console.ReadLine().Split();
-                for (int j = 0; j < 1; j++)
+
+                //try
+                //{
+                //    str = Console.ReadLine().Split();
+                //    if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
+                //    {
+                //        throw new FormatException();
+                //    }
+                //}
+                //catch (FormatException)
+                //{
+                //    Console.WriteLine("uncorrect input");
+                //    goto start3;
+                //}
+
+                if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
                 {
-                    a2[i] = Convert.ToInt32(str[0]);
-                    c2[i] = Convert.ToChar(str[1]);
+                    Console.WriteLine("uncorrect input");
+                    i--;
+                    continue;
+                }
+
+                if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
+                {
+                    for (int j = 0; j < 1; j++)
+                    {
+                        a2[i] = Convert.ToInt32(str[0]);
+                        c2[i] = Convert.ToChar(str[1].ToUpper());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("uncorrect input");
+                    i--;
+                    continue;
                 }
             }
 
@@ -83,10 +172,11 @@ namespace _7RedGame
                 {
                     Console.WriteLine("The first combination wins!");
                 }
-                else
+                else if (GetColorNumber(maxCard1.Item2) > GetColorNumber(maxCard2.Item2))
                 {
                     Console.WriteLine("The second combination wins!");
                 }
+                else { Console.WriteLine("unreal"); }
             }
         }
 
@@ -120,10 +210,21 @@ namespace _7RedGame
             return colors.IndexOf(lett);
         }
 
+        static bool CheckLetter(char Letter)
+        {
+            string colors = "ROYGCBP";
+            int pulpe = colors.IndexOf(Letter);
+
+            if (pulpe >= 0)
+                return true;
+            else
+                return false;
+        }
+
         static void Hint()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write("4 Y");
+            Console.Write("1 R");
             Console.ResetColor();
             Console.SetCursorPosition(0, Console.CursorTop);
         }
