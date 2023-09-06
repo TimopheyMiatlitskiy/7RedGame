@@ -2,94 +2,35 @@
 {
     static void Main()
     {
-    // Data input
-    start1:
-        Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
-        int n1 = 0;
-        try
+        // Data input
+        int firstCombinationLength = 0;
+        for (int i = 0; i < 1; i++)
         {
-            n1 = Convert.ToInt32(Console.ReadLine());
-            if (n1 < 8 && n1 > 0)
+            Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
+            try
             {
+                firstCombinationLength = Convert.ToInt32(Console.ReadLine());
             }
-            else
+            catch
             {
-                throw new Exception();
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
             }
-        }
-        catch (Exception)
-        {
-            Console.WriteLine("uncorrect input");
-            goto start1;
+            if (firstCombinationLength > 7 || firstCombinationLength < 1)
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
         }
 
-        int[] a1 = new int[n1];
-        char[] c1 = new char[n1];
+        int[] firstCombinationNumbers = new int[firstCombinationLength];
+        char[] firstCombinationColors = new char[firstCombinationLength];
 
         Console.WriteLine("Enter the cards of the first combination:");
 
-    start2:
-        for (int i = 0; i < n1; i++)
-        {
-            Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
-            Hint();
-            string[] str = { };
-
-            try
-            {
-                str = Console.ReadLine().Split();
-                if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
-                {
-                    throw new FormatException();
-                }
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("uncorrect input");
-                goto start2;
-            }
-
-            if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
-            {
-                for (int j = 0; j < 1; j++)
-                {
-                    a1[i] = Convert.ToInt32(str[0]);
-                    c1[i] = Convert.ToChar(str[1].ToUpper());
-                }
-            }
-            else
-            {
-                Console.WriteLine("uncorrect input");
-                goto start2;
-            }
-        }
-
-    start3:
-        Console.WriteLine("Enter the size of the second combination (from 1 to 7):");
-        int n2 = 0;//Convert.ToInt32(Console.ReadLine());
-        try
-        {
-            n2 = Convert.ToInt32(Console.ReadLine());
-            if (n2 < 8 && n2 > 0)
-            {
-            }
-            else
-            {
-                throw new Exception();
-            }
-        }
-        catch (Exception)
-        {
-            Console.WriteLine("uncorrect input");
-            goto start3;
-        }
-
-        int[] a2 = new int[n2];
-        char[] c2 = new char[n2];
-
-        Console.WriteLine("Enter the cards of the second combination:");
-
-        for (int i = 0; i < n2; i++)
+        for (int i = 0; i < firstCombinationLength; i++)
         {
             Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
             Hint();
@@ -106,8 +47,65 @@
             {
                 for (int j = 0; j < 1; j++)
                 {
-                    a2[i] = Convert.ToInt32(str[0]);
-                    c2[i] = Convert.ToChar(str[1].ToUpper());
+                    firstCombinationNumbers[i] = Convert.ToInt32(str[0]);
+                    firstCombinationColors[i] = Convert.ToChar(str[1].ToUpper());
+                }
+            }
+            else
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+        }
+
+        Console.WriteLine("Enter the size of the second combination (from 1 to 7):");
+        int secondCombinationLength = 0;
+        for (int i = 0; i < 1; i++)
+        {
+            Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
+            try
+            {
+                secondCombinationLength = Convert.ToInt32(Console.ReadLine());
+            }
+            catch
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+            if (secondCombinationLength > 7 || secondCombinationLength < 1)
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+        }
+
+        int[] secondCombinationNumbers = new int[secondCombinationLength];
+        char[] secondCombinationColors = new char[secondCombinationLength];
+
+        Console.WriteLine("Enter the cards of the second combination:");
+
+        for (int i = 0; i < secondCombinationLength; i++)
+        {
+            Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
+            Hint();
+            string[] str = Console.ReadLine().Split();
+
+            if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+
+            if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
+            {
+                for (int j = 0; j < 1; j++)
+                {
+                    secondCombinationNumbers[i] = Convert.ToInt32(str[0]);
+                    secondCombinationColors[i] = Convert.ToChar(str[1].ToUpper());
                 }
             }
             else
@@ -119,8 +117,8 @@
         }
 
         // Checking the winning combination
-        Tuple<int, char> maxCard1 = FindMaxCard(a1, c1);
-        Tuple<int, char> maxCard2 = FindMaxCard(a2, c2);
+        Tuple<int, char> maxCard1 = FindMaxCard(firstCombinationNumbers, firstCombinationColors);
+        Tuple<int, char> maxCard2 = FindMaxCard(secondCombinationNumbers, secondCombinationColors);
 
         if (maxCard1.Item1 > maxCard2.Item1)
         {
