@@ -5,7 +5,7 @@
     // Data input
     start1:
         Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
-        int n1 = 0;//Convert.ToInt32(Console.ReadLine());
+        int n1 = 0;
         try
         {
             n1 = Convert.ToInt32(Console.ReadLine());
@@ -95,20 +95,6 @@
             Hint();
             string[] str = Console.ReadLine().Split();
 
-            //try
-            //{
-            //    str = Console.ReadLine().Split();
-            //    if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
-            //    {
-            //        throw new FormatException();
-            //    }
-            //}
-            //catch (FormatException)
-            //{
-            //    Console.WriteLine("uncorrect input");
-            //    goto start3;
-            //}
-
             if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
             {
                 Console.WriteLine("uncorrect input");
@@ -138,25 +124,11 @@
 
         if (maxCard1.Item1 > maxCard2.Item1)
         {
-            if (GetColorNumber(maxCard1.Item2) < GetColorNumber(maxCard2.Item2))
-            {
-                Console.WriteLine("The first combination wins!");
-            }
-            else
-            {
-                Console.WriteLine("The second combination wins!");
-            }
+            Console.WriteLine("The first combination wins!");
         }
         else if (maxCard1.Item1 < maxCard2.Item1)
         {
-            if (GetColorNumber(maxCard1.Item2) < GetColorNumber(maxCard2.Item2))
-            {
-                Console.WriteLine("The first combination wins!");
-            }
-            else
-            {
-                Console.WriteLine("The second combination wins!");
-            }
+            Console.WriteLine("The second combination wins!");
         }
         else
         {
@@ -168,7 +140,7 @@
             {
                 Console.WriteLine("The second combination wins!");
             }
-            else { Console.WriteLine("unreal"); }
+            else { Console.WriteLine("Unreal"); }
         }
     }
 
