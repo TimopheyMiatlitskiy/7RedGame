@@ -1,125 +1,175 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _7RedGame
+﻿internal class Program
 {
-    internal class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        // First combination data input 
+        int firstCombinationLength = 0;
+
+        Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
+
+        firstCombinationLength = CheckNumberInput(firstCombinationLength);
+
+        int[] firstCombinationNumbers = new int[firstCombinationLength];
+        char[] firstCombinationColors = new char[firstCombinationLength];
+
+        Console.WriteLine("Enter the cards of the first combination:");
+
+        Tuple <int[], char[]> timeTuple = CheckNumLet(firstCombinationLength, firstCombinationNumbers, firstCombinationColors);
+
+        firstCombinationNumbers = timeTuple.Item1;
+        firstCombinationColors = timeTuple.Item2;
+
+        // Second combination data input 
+        int secondCombinationLength = 0;
+
+        Console.WriteLine("Enter the size of the second combination (from 1 to 7):");
+
+        secondCombinationLength = CheckNumberInput(secondCombinationLength);
+
+        int[] secondCombinationNumbers = new int[secondCombinationLength];
+        char[] secondCombinationColors = new char[secondCombinationLength];
+
+        Console.WriteLine("Enter the cards of the second combination:");
+
+        timeTuple = CheckNumLet(secondCombinationLength, secondCombinationNumbers, secondCombinationColors);
+
+        secondCombinationNumbers = timeTuple.Item1;
+        secondCombinationColors = timeTuple.Item2;
+
+        // Checking the winning combination
+        Tuple<int, char> maxCard1 = FindMaxCard(firstCombinationNumbers, firstCombinationColors);
+        Tuple<int, char> maxCard2 = FindMaxCard(secondCombinationNumbers, secondCombinationColors);
+
+        if (maxCard1.Item1 > maxCard2.Item1)
         {
-            // Ввод данных
-            Console.WriteLine("Введите размер первой комбинации (от 1 до 7):");
-            int n1 = Convert.ToInt32(Console.ReadLine());
-
-            int[] a1 = new int[n1];
-            char[] c1 = new char[n1];
-
-            Console.WriteLine("Введите карты первой комбинации:");
-
-            for (int i = 0; i < n1; i++)
+            Console.WriteLine("The first combination wins!");
+        }
+        else if (maxCard1.Item1 < maxCard2.Item1)
+        {
+            Console.WriteLine("The second combination wins!");
+        }
+        else
+        {
+            if (GetColorNumber(maxCard1.Item2) < GetColorNumber(maxCard2.Item2))
             {
-                Console.WriteLine("Введите номинал (от 1 до 7) c цветом (R/O/Y/G/C/B/P) карты:");
-                string[] str = Console.ReadLine().Split();
+                Console.WriteLine("The first combination wins!");
+            }
+            else if (GetColorNumber(maxCard1.Item2) > GetColorNumber(maxCard2.Item2))
+            {
+                Console.WriteLine("The second combination wins!");
+            }
+            else { Console.WriteLine("Unreal"); }
+        }
+    }
+
+    static Tuple<int, char> FindMaxCard(int[] a, char[] c)
+    {
+        int maxCardNumber = 0;
+        char maxCardColor = ' ';
+
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (a[i] > maxCardNumber)
+            {
+                maxCardNumber = a[i];
+                maxCardColor = c[i];
+            }
+            else if (a[i] == maxCardNumber)
+            {
+                if (GetColorNumber(c[i]) < GetColorNumber(maxCardColor)) // Checking colors by indexes
+                {
+                    maxCardNumber = a[i];
+                }
+            }
+        }
+
+        return Tuple.Create(maxCardNumber, maxCardColor);
+    }
+
+    static int GetColorNumber(char lett)
+    {
+        string colors = "ROYGCBP";
+        return colors.IndexOf(lett);
+    }
+
+    static bool CheckLetter(char Letter)
+    {
+        string colors = "ROYGCBP";
+        int pulpe = colors.IndexOf(Letter);
+
+        if (pulpe >= 0)
+            return true;
+        else
+            return false;
+    }
+
+    static void Hint()
+    {
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.Write("1 R");
+        Console.ResetColor();
+        Console.SetCursorPosition(0, Console.CursorTop);
+    }
+
+    static int CheckNumberInput(int number)
+    {
+        for (int i = 0; i < 1; i++)
+        {
+            int maxSize = 7;
+            int minSize = 1;
+            try
+            {
+                number = Convert.ToInt32(Console.ReadLine());
+            }
+            catch
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+            if (number > maxSize || number < minSize)
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+        }
+        return number;
+    }
+
+    static Tuple<int[], char[]> CheckNumLet(int length, int[] number, char[] color)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            int maxSize = 7;
+            int minSize = 1;
+            int cardLength = 2;
+            Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
+            Hint();
+            string[] str = Console.ReadLine().Split();
+
+            if (str.Length != cardLength || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+
+            if (Convert.ToInt32(str[0]) <= maxSize && Convert.ToInt32(str[0]) >= minSize && CheckLetter(Convert.ToChar(str[1].ToUpper())))
+            {
                 for (int j = 0; j < 1; j++)
                 {
-                    a1[i] = Convert.ToInt32(str[0]);
-                    c1[i] = Convert.ToChar(str[1]);
-                }
-            }
-
-            Console.WriteLine("Введите размер второй комбинации (от 1 до 7):");
-            int n2 = Convert.ToInt32(Console.ReadLine());
-
-            int[] a2 = new int[n2];
-            char[] c2 = new char[n2];
-
-            Console.WriteLine("Введите карты второй комбинации:");
-
-            for (int i = 0; i < n2; i++)
-            {
-                Console.WriteLine("Введите номинал (от 1 до 7) c цветом (R/O/Y/G/C/B/P) карты:");
-                string[] str = Console.ReadLine().Split();
-                for (int j = 0; j < 1; j++)
-                {
-                    a2[i] = Convert.ToInt32(str[0]);
-                    c2[i] = Convert.ToChar(str[1]);
-                }
-            }
-
-            // Проверка выигрышной комбинации
-            Tuple<int, char> maxCard1 = FindMaxCard(a1, c1);
-            Tuple<int, char> maxCard2 = FindMaxCard(a2, c2);
-
-            if (maxCard1.Item1 > maxCard2.Item1)
-            {
-                if (GetColorNumber(maxCard1.Item2) < GetColorNumber(maxCard2.Item2))
-                {
-                    Console.WriteLine("Первая комбинация выигрывает!");
-                }
-                else
-                {
-                    Console.WriteLine("Вторая комбинация выигрывает!");
-                }
-            }
-            else if (maxCard1.Item1 < maxCard2.Item1)
-            {
-                if (GetColorNumber(maxCard1.Item2) < GetColorNumber(maxCard2.Item2))
-                {
-                    Console.WriteLine("Первая комбинация выигрывает!");
-                }
-                else
-                {
-                    Console.WriteLine("Вторая комбинация выигрывает!");
+                    number[i] = Convert.ToInt32(str[0]);
+                    color[i] = Convert.ToChar(str[1].ToUpper());
                 }
             }
             else
             {
-                if (GetColorNumber(maxCard1.Item2) < GetColorNumber(maxCard2.Item2))
-                {
-                    Console.WriteLine("Первая комбинация выигрывает!");
-                }
-                else
-                {
-                    Console.WriteLine("Вторая комбинация выигрывает!");
-                }
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
             }
-
         }
-
-        static Tuple<int, char> FindMaxCard(int[] a, char[] c)
-        {
-            int maxCardNumber = 0;
-            char maxCardColor = ' ';
-
-            for (int i = 0; i < a.Length; i++)
-            {
-                if (a[i] > maxCardNumber)
-                {
-                    maxCardNumber = a[i];
-                    maxCardColor = c[i];
-                }
-                else if (a[i] == maxCardNumber)
-                {
-                    if (GetColorNumber(c[i]) < GetColorNumber(maxCardColor)) // Проверка цветов по индексам
-                    {
-                        maxCardNumber = a[i];
-                    }
-                }
-            }
-
-            return Tuple.Create(maxCardNumber, maxCardColor);
-        }
-
-        static int GetColorNumber(char lett)
-        {
-            string colors = "ROYGCBP";
-            return colors.IndexOf(lett);
-        }
+        return new Tuple<int[], char[]>(number, color);
     }
-
-
-
 }
