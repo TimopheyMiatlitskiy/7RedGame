@@ -115,6 +115,8 @@
     {
         for (int i = 0; i < 1; i++)
         {
+            int maxSize = 7;
+            int minSize = 1;
             try
             {
                 number = Convert.ToInt32(Console.ReadLine());
@@ -125,7 +127,7 @@
                 i--;
                 continue;
             }
-            if (number > 7 || number < 1)
+            if (number > maxSize || number < minSize)
             {
                 Console.WriteLine("uncorrect input");
                 i--;
@@ -139,18 +141,21 @@
     {
         for (int i = 0; i < length; i++)
         {
+            int maxSize = 7;
+            int minSize = 1;
+            int cardLength = 2;
             Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
             Hint();
             string[] str = Console.ReadLine().Split();
 
-            if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
+            if (str.Length != cardLength || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
             {
                 Console.WriteLine("uncorrect input");
                 i--;
                 continue;
             }
 
-            if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
+            if (Convert.ToInt32(str[0]) <= maxSize && Convert.ToInt32(str[0]) >= minSize && CheckLetter(Convert.ToChar(str[1].ToUpper())))
             {
                 for (int j = 0; j < 1; j++)
                 {
