@@ -2,119 +2,39 @@
 {
     static void Main()
     {
-        // Data input
+        // First combination data input 
         int firstCombinationLength = 0;
-        for (int i = 0; i < 1; i++)
-        {
-            Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
-            try
-            {
-                firstCombinationLength = Convert.ToInt32(Console.ReadLine());
-            }
-            catch
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
-            if (firstCombinationLength > 7 || firstCombinationLength < 1)
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
-        }
+
+        Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
+
+        firstCombinationLength = CheckNumberInput(firstCombinationLength);
 
         int[] firstCombinationNumbers = new int[firstCombinationLength];
         char[] firstCombinationColors = new char[firstCombinationLength];
 
         Console.WriteLine("Enter the cards of the first combination:");
 
-        for (int i = 0; i < firstCombinationLength; i++)
-        {
-            Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
-            Hint();
-            string[] str = Console.ReadLine().Split();
+        Tuple <int[], char[]> timeTuple = CheckNumLet(firstCombinationLength, firstCombinationNumbers, firstCombinationColors);
 
-            if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
+        firstCombinationNumbers = timeTuple.Item1;
+        firstCombinationColors = timeTuple.Item2;
 
-            if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
-            {
-                for (int j = 0; j < 1; j++)
-                {
-                    firstCombinationNumbers[i] = Convert.ToInt32(str[0]);
-                    firstCombinationColors[i] = Convert.ToChar(str[1].ToUpper());
-                }
-            }
-            else
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
-        }
+        // Second combination data input 
+        int secondCombinationLength = 0;
 
         Console.WriteLine("Enter the size of the second combination (from 1 to 7):");
-        int secondCombinationLength = 0;
-        for (int i = 0; i < 1; i++)
-        {
-            Console.WriteLine("Enter the size of the first combination (from 1 to 7):");
-            try
-            {
-                secondCombinationLength = Convert.ToInt32(Console.ReadLine());
-            }
-            catch
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
-            if (secondCombinationLength > 7 || secondCombinationLength < 1)
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
-        }
+
+        secondCombinationLength = CheckNumberInput(secondCombinationLength);
 
         int[] secondCombinationNumbers = new int[secondCombinationLength];
         char[] secondCombinationColors = new char[secondCombinationLength];
 
         Console.WriteLine("Enter the cards of the second combination:");
 
-        for (int i = 0; i < secondCombinationLength; i++)
-        {
-            Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
-            Hint();
-            string[] str = Console.ReadLine().Split();
+        timeTuple = CheckNumLet(secondCombinationLength, secondCombinationNumbers, secondCombinationColors);
 
-            if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
-
-            if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
-            {
-                for (int j = 0; j < 1; j++)
-                {
-                    secondCombinationNumbers[i] = Convert.ToInt32(str[0]);
-                    secondCombinationColors[i] = Convert.ToChar(str[1].ToUpper());
-                }
-            }
-            else
-            {
-                Console.WriteLine("uncorrect input");
-                i--;
-                continue;
-            }
-        }
+        secondCombinationNumbers = timeTuple.Item1;
+        secondCombinationColors = timeTuple.Item2;
 
         // Checking the winning combination
         Tuple<int, char> maxCard1 = FindMaxCard(firstCombinationNumbers, firstCombinationColors);
@@ -189,5 +109,62 @@
         Console.Write("1 R");
         Console.ResetColor();
         Console.SetCursorPosition(0, Console.CursorTop);
+    }
+
+    static int CheckNumberInput(int number)
+    {
+        for (int i = 0; i < 1; i++)
+        {
+            try
+            {
+                number = Convert.ToInt32(Console.ReadLine());
+            }
+            catch
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+            if (number > 7 || number < 1)
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+        }
+        return number;
+    }
+
+    static Tuple<int[], char[]> CheckNumLet(int length, int[] number, char[] color)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            Console.WriteLine("Enter the denomination (from 1 to 7) with color (R/O/Y/G/C/B/P) of the card:");
+            Hint();
+            string[] str = Console.ReadLine().Split();
+
+            if (str.Length != 2 || !int.TryParse(str[0], out _) || !char.TryParse(str[1], out _))
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+
+            if (Convert.ToInt32(str[0]) <= 7 && Convert.ToInt32(str[0]) > 0 && CheckLetter(Convert.ToChar(str[1].ToUpper())))
+            {
+                for (int j = 0; j < 1; j++)
+                {
+                    number[i] = Convert.ToInt32(str[0]);
+                    color[i] = Convert.ToChar(str[1].ToUpper());
+                }
+            }
+            else
+            {
+                Console.WriteLine("uncorrect input");
+                i--;
+                continue;
+            }
+        }
+        return new Tuple<int[], char[]>(number, color);
     }
 }
